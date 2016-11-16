@@ -63,8 +63,11 @@ public class Column extends Entity {
         }
 
         static public float getHorizontalSpacing(DoubleColumn endColumn) {
-            return endColumn.getX() + endColumn.mTop.getWidth() + MyGdxGame.WIDTH/6;
+            return endColumn.getX() + endColumn.mTop.getWidth();
         }
 
+        static public float getHorizontalSpacingWithMargin(DoubleColumn endColumn) {
+            return getHorizontalSpacing(endColumn) + MyGdxGame.WIDTH/6;
+        }
     }
 }
