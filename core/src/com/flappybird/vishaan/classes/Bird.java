@@ -19,7 +19,7 @@ public class Bird extends Entity {
 
     @Override
     protected void initialize() {
-        setPosition(MyGdxGame.WIDTH/2, MyGdxGame.HEIGHT/2);
+        setPosition(MyGdxGame.WIDTH/4, MyGdxGame.HEIGHT/2);
     }
 
     @Override
@@ -41,4 +41,5 @@ public class Bird extends Entity {
     public void jump() {
         mVelocity = 6.5f;
     }
+
 }

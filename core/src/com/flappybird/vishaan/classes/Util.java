@@ -1,5 +1,6 @@
 package com.flappybird.vishaan.classes;
 
+import com.badlogic.gdx.Gdx;
 import com.flappybird.vishaan.MyGdxGame;
 
 /**
@@ -7,9 +8,9 @@ import com.flappybird.vishaan.MyGdxGame;
  */
 
 public class Util {
-    public static final void log(String str) {
+    public static final void log(String str, String tag) {
         if(MyGdxGame.DEBUG) {
-            System.out.println(str);
+            Gdx.app.debug(tag, str);
         }
     }
 }

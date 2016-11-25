@@ -1,6 +1,5 @@
 package com.flappybird.vishaan.classes;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.flappybird.vishaan.MyGdxGame;
 
@@ -19,19 +18,21 @@ public class Column extends Entity {
     }
 
     @Override
-    protected void initialize() {
-    }
-
-    @Override
     protected float getImageScale() {
         return IMAGE_SCALE;
     }
 
-    public static class DoubleColumn {
+    @Override
+    protected void initialize() {
+        super.initialize();
+        setDefaultRectScale(1.0f);
+    }
+
+    public static class DoubleColumn extends Entity  {
         public Column mTop;
         public Column mBottom;
-        public float mVelocity = -3.0f;
-        private static final float VERTICAL_SPACING = MyGdxGame.HEIGHT/4;
+        public float mVelocity = -2.7f;
+        private static final float VERTICAL_SPACING = MyGdxGame.HEIGHT/3.5f;
 
         public DoubleColumn(Column top, Column bottom) {
             mTop = top;
@@ -40,13 +41,17 @@ public class Column extends Entity {
             mTop.setPosition(MyGdxGame.WIDTH, MyGdxGame.HEIGHT);
             Random random = new Random();
             float leastAmount = MyGdxGame.HEIGHT - mTop.getHeight()*IMAGE_SCALE - VERTICAL_SPACING;
-            System.out.println(leastAmount);
             float amount = random.nextInt((int) (mTop.getHeight() * IMAGE_SCALE));
             if(amount < leastAmount) {
                 amount = leastAmount;
             }
             mTop.moveBy(0, -amount);
             mBottom.setPosition(MyGdxGame.WIDTH, mTop.getY() - mBottom.getHeight()*IMAGE_SCALE - VERTICAL_SPACING);
+        }
+
+        @Override
+        protected void initialize() {
+            super.initialize();
         }
 
         public float getX() {
@@ -58,6 +63,11 @@ public class Column extends Entity {
             mBottom.moveBy(x, y);
         }
 
+        @Override
+        protected float getImageScale() {
+            return IMAGE_SCALE;
+        }
+
         public float getRightX() {
             return mTop.getRightX();
         }
@@ -67,7 +77,8 @@ public class Column extends Entity {
         }
 
         static public float getHorizontalSpacingWithMargin(DoubleColumn endColumn) {
-            return getHorizontalSpacing(endColumn) + MyGdxGame.WIDTH/6;
+            return getHorizontalSpacing(endColumn) + MyGdxGame.WIDTH/6.5f;
         }
+
     }
 }
