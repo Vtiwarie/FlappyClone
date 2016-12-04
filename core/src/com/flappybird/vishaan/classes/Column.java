@@ -25,14 +25,14 @@ public class Column extends Entity {
     @Override
     protected void initialize() {
         super.initialize();
-        setDefaultRectScale(1.0f);
+        setDefaultRectScale(1);
     }
 
     public static class DoubleColumn extends Entity  {
         public Column mTop;
         public Column mBottom;
-        public float mVelocity = -2.7f;
-        private static final float VERTICAL_SPACING = MyGdxGame.HEIGHT/3.5f;
+        public float mVelocity = -2.8f;
+        static final float VERTICAL_SPACING = MyGdxGame.HEIGHT/3.5f;
 
         public DoubleColumn(Column top, Column bottom) {
             mTop = top;
@@ -47,15 +47,16 @@ public class Column extends Entity {
             }
             mTop.moveBy(0, -amount);
             mBottom.setPosition(MyGdxGame.WIDTH, mTop.getY() - mBottom.getHeight()*IMAGE_SCALE - VERTICAL_SPACING);
+
         }
 
         @Override
-        protected void initialize() {
-            super.initialize();
+        public void update() {
+            moveBy(mVelocity, 0);
         }
 
         public float getX() {
-            return mTop.getX();
+            return (mTop != null) ? mTop.getX() : super.getX();
         }
 
         public void moveBy(float x, float y) {
@@ -80,5 +81,9 @@ public class Column extends Entity {
             return getHorizontalSpacing(endColumn) + MyGdxGame.WIDTH/6.5f;
         }
 
+        @Override
+        protected void initialize() {
+            setDefaultRectScale(IMAGE_SCALE);
+        }
     }
 }

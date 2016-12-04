@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.flappybird.vishaan.classes.Bird;
-import com.flappybird.vishaan.classes.Collider;
 import com.flappybird.vishaan.classes.Column;
 import com.flappybird.vishaan.classes.Column.DoubleColumn;
 import com.flappybird.vishaan.classes.Entity;
@@ -21,15 +20,17 @@ import com.flappybird.vishaan.classes.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO Remove entities when deleting column
-//TODO Fix points system
+//--TODO Remove entities when deleting column
+//--TODO Fix points system
 //TODO Add rotations
 //TODO Add game over message and restart
+//TODO add score GUI
 //TODO Add Sound
 //TODO Add add platform
 //TODO Add social media integration
 //TODO Remove debugging logs and draw debugging
 //TODO Hire Freelancer and replace graphics
+//TODO Test on android
 
 /**
  * Created by Vishaan on 8/7/2016.
@@ -114,18 +115,14 @@ public class GameManager {
         }
     }
 
-    private void moveColumns() {
-        for (DoubleColumn doubleColumn : mColumns) {
-            if(doubleColumn == null) {
-                continue;
-            }
-            doubleColumn.moveBy(doubleColumn.mVelocity, 0);
-        }
-    }
-
-    private void fall() {
-        mBird.fall();
-    }
+//    private void moveColumns() {
+//        for (DoubleColumn doubleColumn : mColumns) {
+//            if(doubleColumn == null) {
+//                continue;
+//            }
+//            doubleColumn.moveBy(doubleColumn.mVelocity, 0);
+//        }
+//    }
 
     private void trackScore() {
         if (mColumns == null || mColumns.isEmpty() || mColumns.get(mCurrentColumnIndex) == null) {
@@ -155,6 +152,7 @@ public class GameManager {
                 continue;
             }
             if (mBird.detectCollision(doubleColumn.mTop) || mBird.detectCollision(doubleColumn.mBottom)) {
+                Util.log("Collided with column", "collision");
                 return true;
             }
         }
@@ -174,7 +172,7 @@ public class GameManager {
                 if (Gdx.input.justTouched()) {
                     mBird.jump();
                 }
-                fall();
+                Entity.updateAll();
                 if (mStage.getActors().contains(mBird, true)) {
                     mStage.getActors().get(mStage.getActors().indexOf(mBird, true)).remove();
                     mStage.addActor(mBird);
@@ -182,9 +180,7 @@ public class GameManager {
 
                 trackScore();
                 detectGameOver();
-
                 addColumn();
-                moveColumns();
                 removeColumn();
                 getStage().act();
             } else if(Gdx.input.justTouched()) {
@@ -192,8 +188,6 @@ public class GameManager {
             }
 
         } else if (Gdx.input.justTouched()) {
-            mGameOver = false;
-            mGameStarted = false;
             init(mGameScreen);
             mGame.setScreen(mGameScreen);
         }
