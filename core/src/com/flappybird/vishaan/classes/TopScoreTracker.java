@@ -10,7 +10,6 @@ import com.badlogic.gdx.Preferences;
 
 public class TopScoreTracker {
     private static TopScoreTracker sInstance;
-    private int mCurrentHigh;
     private Preferences mPrefs;
     private static final String HIGH_SCORE_PREFS = "high_score_prefs";
     private static final String SCORE_KEY = "score_key";
@@ -35,6 +34,5 @@ public class TopScoreTracker {
         mPrefs.flush();
         return 0;
     }
-
 
 }
