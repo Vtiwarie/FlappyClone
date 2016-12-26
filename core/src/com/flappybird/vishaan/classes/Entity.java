@@ -23,7 +23,7 @@ public abstract class Entity extends Image implements Updateable {
     protected Polygon mPolygon;
 
 
-    private static final float DEFAULT_RECT_SCALE = 0.95f;
+    private static final float DEFAULT_RECT_SCALE = 1;
 
     protected Entity() {
         init();

@@ -18,7 +18,7 @@ public class Bird extends Entity {
     private float mAngularAcceleration = 0.04f;
     private static final float IMAGE_SCALE = 0.55f;
     public static float FRAME_DURATION = 0.10f;
-    private static float DEFUALT_RECT_SCALE = 0.9f;
+    private static float DEFUALT_RECT_SCALE = 1;
     private static final float VELOCITY_BEFORE_ROTATE = -5f;
 
     public Bird(Animation animation) {

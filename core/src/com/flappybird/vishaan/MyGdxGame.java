@@ -16,7 +16,7 @@ public class MyGdxGame extends Game {
     public static final int HEIGHT = 512;
 	public static final boolean DEBUG = true;
 	static Game GAME;
-	
+
 	@Override
 	public void create () {
 		GAME = this;

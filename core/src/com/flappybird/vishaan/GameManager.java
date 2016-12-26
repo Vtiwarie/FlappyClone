@@ -4,7 +4,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,6 +14,7 @@ import com.flappybird.vishaan.classes.Bird;
 import com.flappybird.vishaan.classes.Column;
 import com.flappybird.vishaan.classes.Column.DoubleColumn;
 import com.flappybird.vishaan.classes.Entity;
+import com.flappybird.vishaan.classes.TopScoreTracker;
 import com.flappybird.vishaan.classes.Util;
 
 import java.util.ArrayList;
@@ -22,11 +22,14 @@ import java.util.List;
 
 //--TODO Remove entities when deleting column
 //--TODO Fix points system
-//TODO Add rotations
+//--TODO Add rotations
+//TODO Add top-score tracking
 //TODO Add game over message and restart
 //TODO add score GUI
+//TODO add death animations
 //TODO Add Sound
-//TODO Add add platform
+//TODO Add death effects
+//TODO Add ad platform
 //TODO Add social media integration
 //TODO Remove debugging logs and draw debugging
 //TODO Hire Freelancer and replace graphics
@@ -41,6 +44,14 @@ public class GameManager {
     private boolean mGameStarted;
     private Game mGame;
     private Screen mGameScreen;
+    private Stage mStage;
+    private Image[] mBackground;
+    private Bird mBird;
+    private List<DoubleColumn> mColumns;
+    private int mScore;
+    private int mCurrentColumnIndex;
+    private DoubleColumn mColumnCollided;
+
 
     public static GameManager getInstance(Screen screen) {
         if (mInstance == null) {
@@ -52,14 +63,6 @@ public class GameManager {
     private GameManager(Screen screen) {
         init(screen);
     }
-
-    private Stage mStage;
-    private Image[] mBackground;
-    private Bird mBird;
-    private List<DoubleColumn> mColumns;
-    private int mScore;
-    private int mCurrentColumnIndex;
-    private DoubleColumn mColumnCollided;
 
     private void init(Screen screen) {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
@@ -87,6 +90,10 @@ public class GameManager {
         mStage.addActor(mBackground[1]);
         addColumn();
         mStage.addActor(mBird);
+    }
+
+    public int getScore() {
+        return mScore;
     }
 
     /**
@@ -130,7 +137,11 @@ public class GameManager {
         }
         if (mColumns.get(mCurrentColumnIndex).getMid() < mBird.getX()) {
                 mScore++;
-                Util.log("Score: " + mScore + " " + "Column #" + mCurrentColumnIndex, "trackscore");
+                Util.log("Current high score: " + String.valueOf(TopScoreTracker.getInstance().getCurrentHigh()), "tag");
+                saveNewHighScore();
+                Util.log("New high score: " + String.valueOf(TopScoreTracker.getInstance().getCurrentHigh()), "tag");
+
+                 Util.log("Score: " + mScore + " " + "Column #" + mCurrentColumnIndex, "trackscore");
                 mCurrentColumnIndex++;
         }
     }
@@ -163,10 +174,18 @@ public class GameManager {
 
     }
 
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    private void showScore() {
 
+    }
+
+    private void saveNewHighScore() {
+        if(mScore > TopScoreTracker.getInstance().getCurrentHigh()) {
+            TopScoreTracker.getInstance().putCurrentHigh(mScore);
+        }
+    }
+
+
+    public void render(float delta) {
         if (!mGameOver) {
             if(mGameStarted) {
                 if (Gdx.input.justTouched()) {
@@ -178,6 +197,7 @@ public class GameManager {
                     mStage.addActor(mBird);
                 }
 
+                showScore();
                 trackScore();
                 detectGameOver();
                 addColumn();
